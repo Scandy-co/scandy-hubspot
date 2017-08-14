@@ -1,0 +1,21 @@
+{
+  "name": "scandy-web-api",
+  "version": "0.1.0",
+  "description": "an api for all our webby things",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro",
+    "dev": "micro-dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "GF",
+  "license": "ISC",
+  "dependencies": {
+    "https": "^1.0.0",
+    "micro": "^8.0.2",
+    "micro-cors": "^0.0.4"
+  },
+  "devDependencies": {
+    "micro-dev": "^1.2.0"
+  }
+}
