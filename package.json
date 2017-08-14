@@ -11,9 +11,10 @@
   "author": "GF",
   "license": "ISC",
   "dependencies": {
-    "https": "^1.0.0",
     "micro": "^8.0.2",
-    "micro-cors": "^0.0.4"
+    "micro-cors": "^0.0.4",
+    "node-fetch": "^1.7.2",
+    "now-env": "^1.2.1"
   },
   "devDependencies": {
     "micro-dev": "^1.2.0"

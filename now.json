@@ -1,0 +1,5 @@
+{
+  "env": {
+    "HAPI_KEY": "@hapi-key"
+  }
+}

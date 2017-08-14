@@ -1,59 +1,44 @@
-const { json, send } = require('micro')
-const https = require('https');
-const microCors = require('micro-cors')
+require('now-env').config()
+const { json, send } = require('micro');
+const fetch = require('node-fetch');
+const microCors = require('micro-cors');
 const cors = microCors({
   allowMethods: ['POST'],
-  allowHeaders: [
-    'Access-Control-Allow-Origin',
-    'Content-Type',
-  ],
-})
+  allowHeaders: ['Access-Control-Allow-Origin', 'Content-Type'],
+});
 
-const handler = async (request, response) => {
-  const data = await json(request);
+const handler = async (req, res) => {
+  const data = await json(req);
 
-  const properties = []
+  const properties = [];
   for (var key in data) {
     properties.push({
-      "property": key,
-      "value": data[key],
-    })
+      property: key,
+      value: data[key],
+    });
   }
 
-  const postData = {
-    "properties": properties
-  }
+  const postData = JSON.stringify({
+    properties: properties,
+  });
 
-  console.log(postData)
-
-  const options = {
-  	hostname: 'api.hubapi.com',
-    path: `/contacts/v1/contact/?hapikey=${process.env.HAPI_KEY}`,
-  	method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      // 'Authorization': ' Bearer: ee5894a6-eae7-4a7b-bae6-341775be822d'
+  const response = await fetch(
+    `https://api.hubapi.com/contacts/v1/contact/?hapikey=${process.env.HAPI_KEY}`,
+    {
+      method: `POST`,
+      body: postData,
+      headers: {
+        'Content-Type': 'application/json',
+        'COntent-Length': Buffer.byteLength(postData),
+      },
     }
+  );
+
+  const responseJson = await response.json();
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(responseJson)
   }
+  return responseJson;
+};
 
-  // set up the request
-  var request = https.request(options, function(response){
-  	console.log("Status: " + response.statusCode);
-  	console.log("Headers: " + JSON.stringify(response.headers));
-  	response.setEncoding('utf8');
-  	response.on('data', function(chunk){
-  		console.log('Body: ' + chunk)
-  	});
-  });
-
-  request.on('error', function(e){
-  	console.log("Problem with request " + e.message)
-  });
-
-  // post the data
-  request.write(postData);
-  request.end()
-  send(response, 200, "way to go")
-}
-
-module.exports = cors(handler)
+module.exports = cors(handler);
