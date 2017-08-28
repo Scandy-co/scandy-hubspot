@@ -1,5 +1,6 @@
 {
   "env": {
-    "HAPI_KEY": "@hapi-key"
+    "HAPI_KEY": "@hapi-key",
+    "SLACK_HOOK": "@slack-hook"
   }
 }

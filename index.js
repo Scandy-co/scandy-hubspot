@@ -9,6 +9,18 @@ const cors = microCors({
 
 const handler = async (req, res) => {
   const data = await json(req);
+  fetch(
+    process.env.SLACK_HOOK,
+    {
+      method: `POST`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "text": `${data.email} submitted their contact info`
+      })
+    }
+  )
 
   const properties = [];
   for (var key in data) {
@@ -29,7 +41,7 @@ const handler = async (req, res) => {
       body: postData,
       headers: {
         'Content-Type': 'application/json',
-        'COntent-Length': Buffer.byteLength(postData),
+        'Content-Length': Buffer.byteLength(postData),
       },
     }
   );
